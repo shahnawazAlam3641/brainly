@@ -6,7 +6,7 @@ const contentSchema = new mongoose.Schema({
     user:{
         type:mongoose.Types.ObjectId,
         required:true,
-        ref:User
+        ref:"User"
     },
     title:{
         type:String,
