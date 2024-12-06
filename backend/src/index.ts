@@ -9,6 +9,7 @@ import { auth } from "./middlewares/auth";
 import {Types} from "mongoose"
 import Content from "./models/Content";
 import Tag from "./models/Tag";
+import cors from "cors"
 
 const app = express()
 
@@ -20,11 +21,33 @@ const PORT:number = parseInt(process.env.PORT || "4000", 10);
 
 app.use(express.json())
 
+app.use(
+    cors({
+      origin: process.env.REACT_APP_BASE_URL,
+      credentials: true,
+    })
+  );
+
 interface UserDocument {
     _id:Types.ObjectId,
     name:string,
     email:string,
     password?:string,
+    content?:contentDocument[]
+}
+
+interface contentDocument{
+    _id:Types.ObjectId,
+    title:string,
+    link:string,
+    type:string,
+    tag?:tagDocument[]
+}
+
+interface tagDocument{
+    _id:Types.ObjectId,
+    name:string,
+    user:Types.ObjectId
 }
 
 
@@ -40,7 +63,7 @@ app.post("/api/v1/signup", async (req, res) =>{
         return
     }
     
-    const user:UserDocument | null = await User.findOne({email:email})
+    const user = await User.findOne({email:email})
 
     if(user){
          res.status(403).json({
@@ -55,13 +78,27 @@ app.post("/api/v1/signup", async (req, res) =>{
     const newUser = await User.create({
         name:name,
         email:email,
-        password:hashedPassword,
-        content:[]
+        password:hashedPassword
     })
+
+    if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET is not defined in the environment variables.");
+      }
+
+    const token = jwt.sign({
+        name:newUser.name,
+        email:newUser.email
+    }, process.env.JWT_SECRET)
+
+    res.cookie("token", token)
+
+    newUser.password = undefined
 
     res.status(200).json({
         success:true,
-        message:"User successfully registered"
+        message:"User successfully registered",
+        user:newUser,
+        token
     })
     return
 
@@ -76,7 +113,7 @@ app.post("/api/v1/signup", async (req, res) =>{
    }
 })
 
-app.get("/api/v1/signin", async (req,res) =>{
+app.post("/api/v1/signin", async (req,res) =>{
     try {
         const {email,password} = req.body
 
@@ -88,7 +125,17 @@ app.get("/api/v1/signin", async (req,res) =>{
             return
         }
 
-        const user:UserDocument | null = await User.findOne({email:email})
+        const user = await User.findOne({email:email})
+        // .populate({
+        //     path:"content",
+        //     populate:{
+        //         path:"tag"
+        //     }
+        // }).exec()
+
+        
+console.log(user)
+        
 
         if(!user || !user.password){
              res.status(404).json({
@@ -98,7 +145,11 @@ app.get("/api/v1/signin", async (req,res) =>{
             return
         }
 
-        const hashedPassword = user.password
+        const hashedPassword = user.password as string
+
+
+
+        console.log(hashedPassword)
 
         const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
 
@@ -121,9 +172,12 @@ app.get("/api/v1/signin", async (req,res) =>{
 
         res.cookie("token", token)
 
+        user.password = undefined
+
          res.status(200).json({
             success:true,
             message:"User Signed In successfully",
+            user,
             token
         })
         return
