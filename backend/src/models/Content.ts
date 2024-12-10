@@ -17,7 +17,7 @@ const contentSchema = new mongoose.Schema({
     },
     type:{
         type:String,
-        enum:["Twitter(X)", "Youtube", "Other"]
+        enum:["Twitter(X)", "Youtube","Document", "Link"]
     },
     tag:[{
         type:mongoose.Types.ObjectId,

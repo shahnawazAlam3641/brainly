@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from './Button'
 import {useForm} from "react-hook-form"
 import SignGraphic from "../assets/Computer login-rafiki.svg"
 // import { apiEndpoints } from '../utils/apiEndpoints'
 import { apiConnector } from '../utils/apiConnector'
-import { setSignupData, setToken } from '../slices/authSlice'
-import { useDispatch } from 'react-redux'
-import { setNotes } from '../slices/notesSlice'
+// import { setSignupData, setToken } from '../slices/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
+// import { setNotes } from '../slices/notesSlice'
 import { useNavigate } from 'react-router'
+import { FieldValues } from 'react-hook-form'
+import { setSignupData, setToken } from '../slices/authSlice'
+import { setNotes } from '../slices/notesSlice'
+import { getUserDetails } from '../utils/operations'
 
 interface sign {
   Name?:string,
@@ -15,9 +19,15 @@ interface sign {
   Password:string
 }
 
+
 const Sign = () => {
 
+  const profile = useSelector((state)=> state.auth)
+
+  
+
   const dispatch = useDispatch()
+  // const dispatch = useDispa
   const navigate = useNavigate()
 
   // const {CONTENT_API} = apiEndpoints
@@ -31,18 +41,42 @@ const Sign = () => {
   //   console.log(data)
   // }
 
-  const sign = async(formdata:sign)=>{
+  const fetchUser = async()=>{
+
+    const token = localStorage.getItem("token")
+
+    if(token){
+      navigate("/dashboard")
+      // const userDetails = await getUserDetails(token)
+      // console.log(userDetails)
+      
+
+      // dispatch(setToken(token))
+      // // dispatch(setNotes(response?.data?.user?.content))
+      // // response.data.user.content = undefined
+      // dispatch(setSignupData(userDetails?.data?.user))
+      // navigate("/dashboard")
+      // console.log("first")
+    }
+  }
+
+  useEffect(()=>{
+
+   fetchUser()
+  },[])
+
+  const sign = async(formdata:FieldValues)=>{
 
     if(isSigninPage){
       console.log(formdata)
 
-      const response =await apiConnector("POST", "http://localhost:4000/api/v1/signin", {email:formdata.Email,password:formdata.Password})
+      const response = await apiConnector("POST", "http://localhost:4000/api/v1/signin", {email:formdata.Email,password:formdata.Password})
       console.log(response)
       const token = response?.data?.token
   
       localStorage.setItem("token",token)
       dispatch(setToken(token))
-      // dispatch(setNotes(response?.data?.user?.content))
+      dispatch(setNotes(response?.data?.user?.content))
       // response.data.user.content = undefined
       dispatch(setSignupData(response?.data?.user))
       navigate("/dashboard")
@@ -56,8 +90,8 @@ const Sign = () => {
   
       localStorage.setItem("token",token)
       dispatch(setToken(token))
-      // dispatch(setNotes(response?.data?.user?.content))
-      // response.data.user.content = undefined
+      dispatch(setNotes(response?.data?.user?.content))
+      response.data.user.content = undefined
       dispatch(setSignupData(response?.data?.user))
       navigate("/dashboard")
     }
@@ -89,7 +123,7 @@ const Sign = () => {
             {errors.Email && <p>Email name is required.</p>}
             <input className='border border-purple-200 border-solid py-2 px-4  rounded-md' placeholder='Password'  type='password' {...register('Password',{required:true})} />
             {errors.age && <p>Please enter number for age.</p>}
-            <div className='w-full'><Button width='w-full' type='submit' isPrimary={true} text={isSigninPage ? "Sign in" : "Sign Up"} /></div>
+            <div className='w-full'><Button   isPrimary={true} text={isSigninPage ? "Sign in" : "Sign Up"} /></div>
         </form>
 
           <p className='cursor-pointer text-slate-500' onClick={()=> setIsSigninPage(!isSigninPage)}>{isSigninPage ? "New to Brainly? Sign Up Now" : "Already Registered? Sign In Now"}</p>

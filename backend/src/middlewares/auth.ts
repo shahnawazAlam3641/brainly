@@ -41,7 +41,8 @@ interface userDoc {
 
 export const auth = async (req: express.Request,res:express.Response,next:express.NextFunction)=>{
     try {
-        const {token} = req.cookies || req.body || req.header("Authorisation")
+        const token = req.header("Authorisation") || req.cookies || req.body 
+        // console.log("her---------------->",req.header("Authorisation"))
 
         if(!process.env.JWT_SECRET) throw new Error("JWT secret in ,env is undefined")
 

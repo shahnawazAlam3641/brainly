@@ -4,9 +4,9 @@ import ShareIcon from '../svgs/ShareIcon'
 import PlusIcon from '../svgs/PlusIcon'
 import Card from './Card'
 
-const Body = () => {
+const CardsBody = () => {
   return (
-    <div className="flex flex-col gap-5 w-full">
+    <div className="flex flex-col gap-5 w-full bg-slate-50">
           <div className="flex justify-between w-full p-8">
 
             <p className="text-3xl font-medium text-slate-700">All Notes</p>
@@ -31,4 +31,4 @@ const Body = () => {
   )
 }
 
-export default Body
+export default CardsBody

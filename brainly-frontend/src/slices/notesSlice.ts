@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 
-interface tagDoc {
+interface TagDoc {
     _id:string,
     name:string,
     user:string,
@@ -9,7 +9,7 @@ interface tagDoc {
     __v?:number
 }
 
-interface noteDoc { 
+interface NoteDoc { 
     _id:string,
     link:string,
     title:string,
@@ -17,12 +17,12 @@ interface noteDoc {
     user:string,
     createdAt:string,
     updatedAt:string,
-    tag:tagDoc[]
+    tag:TagDoc[]
     __v?:number
 }
 
 interface NotesState {
-    content: noteDoc[];
+    content: NoteDoc[];
   }
 
   const initialState: NotesState = {
@@ -35,21 +35,17 @@ const notesSlice = createSlice({
     name:"notes",
     initialState,
     reducers:{
-        setNotes(state,action){
+        setNotes(state:NotesState,action: PayloadAction<NoteDoc[]>){
             state.content = action.payload
         },
-        pushNote(state,action){
-            const note:noteDoc = action.payload
-            state.content.push(note)
+        pushNote(state:NotesState,action: PayloadAction<NoteDoc>){
+            
+            state.content.push(action.payload)
         },
-        deleteNote(state,action){
+        deleteNote(state:NotesState,action: PayloadAction<string>){
             const id:string = action.payload
 
-           initialState?.content.map((note,index)=>{
-                if(note._id === id){
-                    initialState?.content.splice(index,1)
-                }
-            })
+            state.content = state.content.filter((note) => note._id !== id);
         }
     }
 })

@@ -1,6 +1,6 @@
-import express from "express"
+import express, { Request, Response } from "express"
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import dotenv from "dotenv"
 import User from "./models/User";
 import connectDB from "./config/database";
@@ -134,7 +134,7 @@ app.post("/api/v1/signin", async (req,res) =>{
         // }).exec()
 
         
-console.log(user)
+// console.log(user)
         
 
         if(!user || !user.password){
@@ -149,7 +149,7 @@ console.log(user)
 
 
 
-        console.log(hashedPassword)
+        // console.log(hashedPassword)
 
         const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
 
@@ -201,8 +201,8 @@ app.post("/api/v1/content",auth ,async (req,res) =>{
         
         const {title,link,type,tags} = req.body
 
-        console.log(typeof tags,tags)
-
+        // console.log(type)
+// 
         if(!title|| !link|| !type|| tags.length === 0){
             res.status(401).json({
                 success:false,
@@ -236,9 +236,11 @@ app.post("/api/v1/content",auth ,async (req,res) =>{
             }
         }))
 
-        console.log(tagArray)
+        // console.log(tagArray)
 
-        const content = await Content.create({title,link,type,user:_id,tag:tagArray})
+
+
+        const content = await (await Content.create({title,link,type,user:_id,tag:tagArray})).populate("tag")
 
         console.log(content)
 
@@ -269,13 +271,17 @@ app.post("/api/v1/content",auth ,async (req,res) =>{
 
 })
 
-app.get("/api/v1/content", async (req,res)=>{
+app.get("/api/v1/content", auth, async (req,res)=>{
     try {
 
-        const contents = await Content.find({})
+        const currentUser = req.user
+
+        const contents = await Content.find({user:currentUser?._id}).populate("tag")
+
+        // console.log(contents)
 
         res.status(200).json({
-            success:false,
+            success:true,
             message:"Got all contents Successfully",
             contents
         })
@@ -287,6 +293,43 @@ app.get("/api/v1/content", async (req,res)=>{
             message:"Error occured while getting all contents"
         })
         return
+        
+    }
+})
+
+app.delete("/api/v1/delete", auth, async(req:Request, res:Response)=>{
+    try {
+        const {noteId} = req.body
+
+        const currentUser = req.user
+
+        const note = await Content.findOneAndDelete({_id:noteId, user:currentUser?._id})
+
+        if(!note){
+            res.status(200).json({
+                success:false,
+                message:"Note not found",
+                note
+            })
+            return
+        }
+
+        // console.log(note)
+
+        res.status(200).json({
+            success:true,
+            message:"Note deleted Successfully",
+            note
+        })
+        return
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success:false,
+            message:"Error occured while deleting note",
+            error
+        })
         
     }
 })
@@ -313,7 +356,7 @@ app.get("/api/v1/share/:id",auth, async(req,res)=>{
             return
         }
 
-        console.log(id)
+        // console.log(id)
 
         const user = await User.findById(id).select("name email isPrivate content").populate("content")
 
@@ -392,6 +435,63 @@ try {
     })
     
 }
+})
+
+app.get("/api/v1/userDetails", async(req:Request, res:Response)=>{
+
+    try {
+
+        // console.log(req.header("Authorisation"))
+        
+
+        const token = req.header("Authorisation") || req.cookies || req.body 
+
+        // console.log(token)
+
+        if(!process.env.JWT_SECRET) throw new Error("JWT secret in ,env is undefined")
+
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload
+
+        let user = await User.findOne({email:decodedToken.email})
+        // .populate({
+        //     path:"content",
+        //     populate:{
+        //         path:"tag"
+        //     }
+        // }).exec()
+
+        if(!user){
+            res.status(404).json({
+                success:false,
+                message:"User not found",
+            })
+            return
+        }
+
+        // req.user = {
+        //     _id:user._id as Types.ObjectId,
+        //     name:user.name as string,
+        //     email:user.email as string,
+            // content:user.content as noteDoc[],
+            // isPrivate:user.isPrivate as boolean,
+            // createdAt:NativeDate,
+            // updatedAt:NativeDate,
+            user.password = undefined
+
+        res.status(200).json({
+            success:true,
+            message:"User Details Fetched Successfully",
+            user
+        })
+        return
+    } catch (error) {
+        error
+        res.status(401).json({
+            success:false,
+            message:"Something went wrong while fetching user details",
+            error
+        })
+    }
 })
 
 
