@@ -411,10 +411,14 @@ try {
 
     const user = await User.findByIdAndUpdate(id,{isPrivate:isPrivate})
 
+    
+
     if(user){
+        user.password = undefined
         res.status(200).json({
             success:true,
             message:"Brain privacy successfully updated",
+            user
 
         })
         return

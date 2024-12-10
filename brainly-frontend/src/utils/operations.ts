@@ -22,3 +22,9 @@ export const deleteUserNote = async ( noteId, token)=> {
     const note = await apiConnector("DELETE", "http://localhost:4000/api/v1/delete" , {noteId:noteId}, {Authorisation: token})
     return note
 }
+
+export const changeBrainPrivacy = async (id, privacy, token)=> {
+    
+    const response = await apiConnector("PUT", "http://localhost:4000/api/v1/share/"+id , {isPrivate:privacy}, {Authorisation: token})
+    return response
+}
