@@ -1,12 +1,4 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
 import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-// import CardsBody from "./components/CardsBody"
-import NotesContainer from "./components/NotesContainer";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Hero from "./components/Hero";
 import Sign from "./components/Sign";

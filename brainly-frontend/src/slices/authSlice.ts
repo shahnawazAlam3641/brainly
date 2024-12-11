@@ -15,7 +15,7 @@ interface SignupData {
 
 const initialState:{
     signupData: SignupData | null; // Allow it to be null initially
-  token: string | null;
+    token: string | null;
 } = {
     signupData:null,
     token:localStorage.getItem("token")

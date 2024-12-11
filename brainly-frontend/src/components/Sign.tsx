@@ -5,29 +5,25 @@ import SignGraphic from "../assets/Computer login-rafiki.svg";
 // import { apiEndpoints } from '../utils/apiEndpoints'
 import { apiConnector } from "../utils/apiConnector";
 // import { setSignupData, setToken } from '../slices/authSlice'
-import { useDispatch, useSelector } from "react-redux";
 // import { setNotes } from '../slices/notesSlice'
 import { useNavigate } from "react-router";
 import { FieldValues } from "react-hook-form";
 import { setSignupData, setToken } from "../slices/authSlice";
 import { setNotes } from "../slices/notesSlice";
-import { getUserDetails } from "../utils/operations";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
-interface sign {
-  Name?: string;
-  Email: string;
-  Password: string;
-}
+// interface sign {
+//   Name?: string;
+//   Email: string;
+//   Password: string;
+// }
 
 const Sign = () => {
-  const profile = useSelector((state) => state.auth);
+  // const profile = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
-  // const dispatch = useDispa
   const navigate = useNavigate();
-
-  // const {CONTENT_API} = apiEndpoints
 
   const [isSigninPage, setIsSigninPage] = useState(true);
 
@@ -96,7 +92,7 @@ const Sign = () => {
 
         toast.dismiss(toastId);
         toast.success("Login Successfull");
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
         toast.dismiss(toastId);
         toast.error(error.response.data.message);

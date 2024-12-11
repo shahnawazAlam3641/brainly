@@ -1,11 +1,19 @@
-import React from "react";
+// import React from "react";
 import TwitterIcon from "../svgs/TwitterIcon";
 import YoutubeIcon from "../svgs/YoutubeIcon";
 import DocumentIcon from "../svgs/DocumentIcon";
 import LinkIcon from "../svgs/LinkIcon";
 import { AllIcon } from "../svgs/AllIcon";
 
-const Sidebar = ({ currentTab, setCurrentTab }) => {
+interface propsData {
+  currentTab: string;
+  setCurrentTab: (data: string) => void;
+}
+
+const Sidebar = (props: propsData) => {
+  const currentTab = props.currentTab;
+  const setCurrentTab = props.setCurrentTab;
+
   return (
     <div className="flex flex-col gap-1 p-5 w-fit bg-slate-50 md:min-w-60  min-h-[90vh] ">
       <div

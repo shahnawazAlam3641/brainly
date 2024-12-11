@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 import Button from "./Button";
 import ShareIcon from "../svgs/ShareIcon";
 import PlusIcon from "../svgs/PlusIcon";
@@ -7,7 +9,7 @@ import { addCard, changeBrainPrivacy, getUserNotes } from "../utils/operations";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { pushNote, setNotes } from "../slices/notesSlice";
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 import LockIcon from "../svgs/LockIcon";
 import DropdownIcon from "../svgs/DropdownIcon";
 import LinkIcon from "../svgs/LinkIcon";
@@ -15,7 +17,15 @@ import { setSignupData } from "../slices/authSlice";
 import toast from "react-hot-toast";
 import GlobeIcon from "../svgs/GlobeIcon";
 
-const NotesContainer = ({ currentTab, setCurrentTab }) => {
+interface propsData {
+  currentTab: string;
+  setCurrentTab: (data: string) => void;
+}
+
+const NotesContainer = (props: propsData) => {
+  const currentTab = props.currentTab;
+  // const setCurrentTab = props.setCurrentTab;
+
   const {
     register,
     handleSubmit,
