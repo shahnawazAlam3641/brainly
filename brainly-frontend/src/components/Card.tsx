@@ -26,7 +26,10 @@ const Card = (props) => {
 
   // console.log(props.card._id)
   return (
-    <div className="flex flex-col gap-2 mb-5 break-inside-avoid p-4 shadow-slate-400  bg-white border shadow-sm max-w-72 rounded-lg">
+    <div
+      key={props.key}
+      className="flex flex-col gap-2 mb-5 break-inside-avoid p-4 shadow-slate-400  bg-white border shadow-sm max-w-72 rounded-lg"
+    >
       {/* head */}
       <div className="flex justify-between">
         <div className="flex gap-1">
@@ -116,16 +119,17 @@ const Card = (props) => {
 
       <div>
         <div className="flex flex-wrap gap-2">
-          {props?.card?.tag.map((tag) => {
-            return (
-              <p
-                key={tag._id}
-                className="bg-purple-200 text-sm text-purple-600 rounded-full py-1 px-2"
-              >
-                {tag.name}
-              </p>
-            );
-          })}
+          {props?.card?.tag &&
+            props?.card?.tag.map((tag) => {
+              return (
+                <p
+                  key={tag._id}
+                  className="bg-purple-200 text-sm text-purple-600 rounded-full py-1 px-2"
+                >
+                  {tag.name}
+                </p>
+              );
+            })}
         </div>
 
         <p className="text-slate-400 font-semibold mt-2">

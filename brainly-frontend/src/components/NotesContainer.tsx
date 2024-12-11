@@ -28,8 +28,8 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
 
   const dispatch = useDispatch();
 
-  const currenUser = useSelector((state) => state.auth.signupData);
-  // console.log(currenUser?.isPrivate);
+  const currentUser = useSelector((state) => state.auth.signupData);
+  // console.log(currentUser?.isPrivate);
   const token = useSelector((state) => state.auth.token);
   const content = useSelector((state) => state.notes.content);
 
@@ -51,16 +51,35 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
       tags: tags,
     };
 
-    const createdContent = await addCard(payload, token);
-    dispatch(pushNote(createdContent?.data?.content));
-    setAddModal(false);
+    const toastId = toast.loading("Creating new note");
+
+    try {
+      const createdContent = await addCard(payload, token);
+      dispatch(pushNote(createdContent?.data?.content));
+      setAddModal(false);
+      toast.dismiss(toastId);
+      toast.success("New note created successfully");
+    } catch (error) {
+      console.log(error);
+      toast.dismiss(toastId);
+      toast.error(error.response.data.message);
+    }
     // console.log(createdContent);
   };
 
   const fetchUserNotes = async () => {
-    const allNotes = await getUserNotes(token);
-    dispatch(setNotes(allNotes?.data?.contents));
-    setCardsToShow(allNotes?.data?.contents);
+    const toastId = toast.loading("Fetching Notes");
+    try {
+      const allNotes = await getUserNotes(token);
+      dispatch(setNotes(allNotes?.data?.contents));
+      setCardsToShow(allNotes?.data?.contents);
+
+      toast.dismiss(toastId);
+    } catch (error) {
+      console.log(error);
+      toast.dismiss(toastId);
+      // toast.error(error.response.data.message);
+    }
   };
 
   const updatePrivacyHandler = async () => {
@@ -72,25 +91,41 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
       isPrivate = false;
     }
 
-    const response = await changeBrainPrivacy(currenUser._id, isPrivate, token);
-    if (response.data.success == true) {
-      dispatch(setSignupData(response.data.user));
+    const toastId = toast.loading("Saving Changes");
+
+    try {
+      const response = await changeBrainPrivacy(
+        currentUser._id,
+        isPrivate,
+        token
+      );
+      if (response.data.success == true) {
+        dispatch(setSignupData(response.data.user));
+      }
+      toast.dismiss(toastId);
+      toast.success("Changes Saved");
+      console.log(response);
+      setPrivacyModal(false);
+      setAddModal(false);
+      setShareModal(false);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.message);
     }
-    console.log(response);
   };
 
   useEffect(() => {
     fetchUserNotes();
-    console.log(currenUser);
+    console.log(currentUser);
 
-    if (currenUser && currenUser?.isPrivate) {
+    if (currentUser && currentUser?.isPrivate) {
       console.log("changed to restricted");
       setPrivacy("Restricted");
     } else {
       console.log("changed to anyone");
       setPrivacy("Anyone with link");
     }
-  }, [currenUser]);
+  }, []);
 
   useEffect(() => {
     console.log("??????????????", currentTab);
@@ -110,9 +145,9 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
   return (
     <>
       <div className="flex flex-col gap-5 w-full overflow-y-auto bg-slate-50 overflow-x-hidden">
-        <div className="flex justify-between w-full p-8">
+        <div className="flex justify-between gap-8 w-full p-8">
           <p className="text-3xl font-medium text-slate-700">All Notes</p>
-          <div className=" flex gap-4">
+          <div className=" flex flex-col md:flex-row gap-4">
             <Button
               onPress={() => setShareModal(true)}
               startIcon={<ShareIcon />}
@@ -150,15 +185,24 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
 
       {shareModal && (
         <div className="absolute p-6 w-96 max-w-[85vw] rounded-md z-30 flex flex-col gap-5 top-[50%] -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white shadow-black shadow-2xl">
+          <p
+            onClick={() => {
+              setShareModal(false);
+              setPrivacyModal(false);
+            }}
+            className="text-slate-700 cursor-pointer absolute top-1 right-3 text-xl"
+          >
+            X
+          </p>
           <p>General Access</p>
           <div>
             <input
-              className="border w-full border-purple-200 border-solid  py-2 px-4  rounded-md"
+              className="border w-full border-purple-200 border-solid text-slate-600 py-2 px-4  rounded-md"
               type="text"
               value={
                 window.location.href.replace("dashboard", "share") +
                 "/" +
-                currenUser?._id
+                currentUser?._id
               }
             />
 
@@ -211,15 +255,18 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
                 navigator.clipboard.writeText(
                   window.location.href.replace("dashboard", "share") +
                     "/" +
-                    currenUser?._id
+                    currentUser?._id
                 );
+                toast.success("Link Copied  ");
               }}
               text="Copy Link"
               isPrimary={false}
               startIcon={<LinkIcon />}
             />
             <Button
-              onPress={() => updatePrivacyHandler()}
+              onPress={() => {
+                updatePrivacyHandler();
+              }}
               text="Save Changes"
               isPrimary={true}
             />

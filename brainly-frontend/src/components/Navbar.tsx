@@ -5,6 +5,7 @@ import Button from "./Button";
 import { Link, useNavigate } from "react-router";
 import { getUserDetails } from "../utils/operations";
 import { setSignupData, setToken } from "../slices/authSlice";
+import DropdownIcon from "../svgs/DropdownIcon";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -23,10 +24,10 @@ const Navbar = () => {
   };
 
   const logoutHandler = () => {
+    navigate("/signin");
     dispatch(setSignupData(null));
     dispatch(setToken(null));
     localStorage.removeItem("token");
-    navigate("/signin");
   };
 
   useEffect(() => {
@@ -45,9 +46,19 @@ const Navbar = () => {
           <Button isPrimary={true} text="Sign In Now" />
         </Link>
       ) : (
-        <div className="flex gap-4 items-center">
-          <p>{userInfo.name}</p>{" "}
-          <Button onPress={logoutHandler} isPrimary={false} text="Logout" />
+        <div className="relative flex gap-4 group items-center">
+          <p className="flex gap-2 font-bold cursor-pointer text-slate-600 justify-center items-center  px-2 py-1 rounded">
+            {userInfo.name} <DropdownIcon />
+          </p>
+          <div className="absolute top-full right-0 hidden group-hover:block">
+            {/* <Button onPress={logoutHandler} isPrimary={false} text="Logout" /> */}
+            <p
+              onClick={logoutHandler}
+              className="p-1 px-3 my-1 transition-all duration-200 rounded-sm hover:bg-slate-200 cursor-pointer bg-white shadow-black shadow-sm"
+            >
+              Logout
+            </p>
+          </div>
         </div>
       )}
     </div>
