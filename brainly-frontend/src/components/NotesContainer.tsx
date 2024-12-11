@@ -8,7 +8,7 @@ import Card from "./Card";
 import { addCard, changeBrainPrivacy, getUserNotes } from "../utils/operations";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { pushNote, setNotes } from "../slices/notesSlice";
+import { NoteDoc, pushNote, setNotes } from "../slices/notesSlice";
 // import { useLocation } from "react-router";
 import LockIcon from "../svgs/LockIcon";
 import DropdownIcon from "../svgs/DropdownIcon";
@@ -16,6 +16,8 @@ import LinkIcon from "../svgs/LinkIcon";
 import { setSignupData } from "../slices/authSlice";
 import toast from "react-hot-toast";
 import GlobeIcon from "../svgs/GlobeIcon";
+import { RootState } from "../reducer";
+import { FieldValues } from "react-hook-form";
 
 interface propsData {
   currentTab: string;
@@ -34,14 +36,66 @@ const NotesContainer = (props: propsData) => {
 
   // const [currentTab, setCurrentTab] = useState(null)
 
-  const [cardsToShow, setCardsToShow] = useState([]);
+  const [cardsToShow, setCardsToShow] = useState<NoteDoc[]>([]);
 
   const dispatch = useDispatch();
 
-  const currentUser = useSelector((state) => state.auth.signupData);
+  // interface SignupData {
+  //   _id: string;
+  //   name: string;
+  //   email: string;
+  //   isPrivate: boolean;
+  //   createdAt: string;
+  //   updatedAt: string;
+  // }
+
+  // interface authData {
+  //   signupData: SignupData | null; // Allow it to be null initially
+  //   token: string | null;
+  // }
+
+  // interface authState {
+  //   auth: authData;
+  // }
+
+  // interface tag {
+  //   _id: string;
+  //   user: string;
+  //   name: string;
+  //   createdAt: string;
+  //   updated: string;
+  // }
+
+  // interface contentData {
+  //   _id: string;
+  //   user: string;
+  //   title: string;
+  //   link: string;
+  //   type: string;
+  //   tag: tag[];
+  //   createdAt: string;
+  //   updated: string;
+  // }
+
+  // interface content {
+  //   content: contentData[];
+  // }
+
+  // interface noteState {
+  //   notes: content;
+  // }
+
+  // interface addForm {
+  //   Title: string;
+  //   Link: string;
+  //   Type: string;
+  //   Tag: string;
+  // }
+
+  const currentUser = useSelector((state: RootState) => state.auth.signupData);
   // console.log(currentUser?.isPrivate);
-  const token = useSelector((state) => state.auth.token);
-  const content = useSelector((state) => state.notes.content);
+  const token = useSelector((state: RootState) => state.auth.token);
+  const content = useSelector((state: RootState) => state.notes.content);
 
   const [addModal, setAddModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
@@ -50,10 +104,12 @@ const NotesContainer = (props: propsData) => {
 
   // console.log(privacy);
 
-  const handleAddContent = async (data) => {
+  const handleAddContent = async (data: FieldValues) => {
     // console.log(data);
-    const tags = data.Tag.split(",").map((elem) => elem.trim());
-    // console.log(tags);
+    const tags = data.Tag.split(",")
+      .map((elem: string) => elem.trim())
+      .filter((elem: string) => elem !== "");
+
     const payload = {
       title: data.Title,
       link: data.Link,
@@ -72,7 +128,7 @@ const NotesContainer = (props: propsData) => {
     } catch (error) {
       console.log(error);
       toast.dismiss(toastId);
-      toast.error(error.response.data.message);
+      toast.error("Something went wrong while creating new note");
     }
     // console.log(createdContent);
   };
@@ -103,24 +159,26 @@ const NotesContainer = (props: propsData) => {
 
     const toastId = toast.loading("Saving Changes");
 
-    try {
-      const response = await changeBrainPrivacy(
-        currentUser._id,
-        isPrivate,
-        token
-      );
-      if (response.data.success == true) {
-        dispatch(setSignupData(response.data.user));
+    if (currentUser && (isPrivate == false || isPrivate == true)) {
+      try {
+        const response = await changeBrainPrivacy(
+          currentUser?._id,
+          isPrivate,
+          token
+        );
+        if (response.data.success == true) {
+          dispatch(setSignupData(response.data.user));
+        }
+        toast.dismiss(toastId);
+        toast.success("Changes Saved");
+        console.log(response);
+        setPrivacyModal(false);
+        setAddModal(false);
+        setShareModal(false);
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong, Brain privacy not changed");
       }
-      toast.dismiss(toastId);
-      toast.success("Changes Saved");
-      console.log(response);
-      setPrivacyModal(false);
-      setAddModal(false);
-      setShareModal(false);
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.message);
     }
   };
 
@@ -129,21 +187,21 @@ const NotesContainer = (props: propsData) => {
     console.log(currentUser);
 
     if (currentUser && currentUser?.isPrivate) {
-      console.log("changed to restricted");
+      // console.log("changed to restricted");
       setPrivacy("Restricted");
     } else {
-      console.log("changed to anyone");
+      // console.log("changed to anyone");
       setPrivacy("Anyone with link");
     }
   }, []);
 
   useEffect(() => {
-    console.log("??????????????", currentTab);
+    // console.log("??????????????", currentTab);
     if (currentTab == "All") {
-      console.log("ran allllllllllll");
+      // console.log("ran allllllllllll");
       setCardsToShow(content);
     } else {
-      console.log("ran filteringgggggggggg");
+      // console.log("ran filteringgggggggggg");
       const filteredCards = content.filter((card) => {
         return card.type == currentTab;
       });
@@ -232,7 +290,8 @@ const NotesContainer = (props: propsData) => {
                   <div className="absolute z-50 flex flex-col   bg-white border shadow-lg top-[55%] w-[200px] p-2 shadow-black">
                     <p
                       onClick={(e) => {
-                        setPrivacy(e.target.innerText);
+                        const target = e.target as HTMLElement;
+                        setPrivacy(target.innerText);
                         setPrivacyModal(false);
                       }}
                       className="hover:bg-slate-200 p-2 rounded-sm transition-all duration-200"
@@ -241,7 +300,8 @@ const NotesContainer = (props: propsData) => {
                     </p>
                     <p
                       onClick={(e) => {
-                        setPrivacy(e.target.innerText);
+                        const target = e.target as HTMLElement;
+                        setPrivacy(target.innerText);
                         setPrivacyModal(false);
                       }}
                       className="hover:bg-slate-200 p-2 rounded-sm transition-all duration-200"

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import { useForm } from "react-hook-form";
 import SignGraphic from "../assets/Computer login-rafiki.svg";
@@ -92,6 +93,7 @@ const Sign = () => {
 
         toast.dismiss(toastId);
         toast.success("Login Successfull");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.log(error);
         toast.dismiss(toastId);

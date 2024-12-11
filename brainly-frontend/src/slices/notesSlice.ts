@@ -1,6 +1,6 @@
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 
-interface TagDoc {
+export interface TagDoc {
     _id:string,
     name:string,
     user:string,
@@ -9,7 +9,7 @@ interface TagDoc {
     __v?:number
 }
 
-interface NoteDoc { 
+export interface NoteDoc { 
     _id:string,
     link:string,
     title:string,

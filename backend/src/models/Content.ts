@@ -1,6 +1,4 @@
 import mongoose from "mongoose"
-import User from "./User"
-import Tag from "./Tag"
 
 const contentSchema = new mongoose.Schema({
     user:{

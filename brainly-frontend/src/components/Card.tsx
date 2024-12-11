@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
+// import { useState } from "react";
 import DeleteIcon from "../svgs/DeleteIcon";
-import ShareIcon from "../svgs/ShareIcon";
+// import ShareIcon from "../svgs/ShareIcon";
 import DocumentIcon from "../svgs/DocumentIcon";
 import { deleteUserNote } from "../utils/operations";
 import { useDispatch } from "react-redux";
-import { deleteNote } from "../slices/notesSlice";
+import { deleteNote, NoteDoc } from "../slices/notesSlice";
 import YoutubeIcon from "../svgs/YoutubeIcon";
 import TwitterIcon from "../svgs/TwitterIcon";
-import { Link } from "react-router";
 import LinkIcon from "../svgs/LinkIcon";
 
-const Card = (props) => {
-  const [typeIcon, setTypeIcon] = useState(<DocumentIcon />);
+interface cardProp {
+  card: NoteDoc;
+  token: string | null;
+  key: string;
+  isShared?: boolean;
+}
+
+const Card = (props: cardProp) => {
+  // const [typeIcon, setTypeIcon] = useState(<DocumentIcon />);
 
   const dispatch = useDispatch();
 
@@ -82,7 +89,7 @@ const Card = (props) => {
             className="rounded-md max-w-full"
             src={
               "https://www.youtube.com/embed/" +
-              `${props?.card?.link.split("/").pop().replace("watch?v=", "")}`
+              `${props?.card?.link?.split("/")?.pop()?.replace("watch?v=", "")}`
             }
             title="YouTube video player"
             frameBorder="0"

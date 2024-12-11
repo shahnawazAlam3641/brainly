@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+// import React, { useEffect } from "react";
+import { useEffect } from "react";
 import BrainIcon from "../svgs/BrainIcon";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "./Button";
@@ -6,11 +7,12 @@ import { Link, useNavigate } from "react-router";
 import { getUserDetails } from "../utils/operations";
 import { setSignupData, setToken } from "../slices/authSlice";
 import DropdownIcon from "../svgs/DropdownIcon";
+import { RootState } from "../reducer";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userInfo = useSelector((state) => state.auth.signupData);
+  const userInfo = useSelector((state: RootState) => state.auth.signupData);
 
   const checkUser = async () => {
     if (localStorage.getItem("token") && !userInfo) {

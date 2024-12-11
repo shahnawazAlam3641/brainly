@@ -1,30 +1,47 @@
-import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
+// import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+// import Sidebar from "./Sidebar";
 import { useParams } from "react-router";
 import { getSharedBrain } from "../utils/operations";
 import { useSelector } from "react-redux";
 import Card from "./Card";
+import { RootState } from "../reducer";
+import { NoteDoc } from "../slices/notesSlice";
+import toast from "react-hot-toast";
+
+interface sharedBrainData {
+  _id: string;
+  name: string;
+  email: string;
+  isPrivate: boolean;
+  content: NoteDoc[];
+}
 
 const SharedBrain = () => {
-  const token = useSelector((state) => state.auth.token);
+  const token = useSelector((state: RootState) => state.auth.token);
 
   console.log(token);
   const { id } = useParams();
 
-  const [brain, setBrain] = useState(null);
+  const [brain, setBrain] = useState<sharedBrainData>();
 
   console.log(brain);
 
   const fetchBrainDetails = async () => {
-    const response = await getSharedBrain(id);
-    console.log("firstfirstfirstfirstfirstfirst");
-    console.log(response.data.isPrivate);
+    if (id) {
+      const response = await getSharedBrain(id);
+      // console.log("firstfirstfirstfirstfirstfirst");
+      console.log(response.data.isPrivate);
 
-    if (response.data.isPrivate) {
-      setBrain(response.data);
+      if (response.data.isPrivate) {
+        console.log(response.data);
+        setBrain(response.data);
+      } else {
+        console.log(response);
+        setBrain(response.data.user);
+      }
     } else {
-      console.log(response);
-      setBrain(response.data.user);
+      toast.error("Invalid Link, Could not get Brain details");
     }
   };
 
@@ -50,7 +67,6 @@ const SharedBrain = () => {
                   isShared={true}
                   token={token}
                   card={{ ...card }}
-                  className="mb-5 break-inside-avoid"
                 />
               );
             })}
