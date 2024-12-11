@@ -334,31 +334,36 @@ app.delete("/api/v1/delete", auth, async(req:Request, res:Response)=>{
     }
 })
 
-app.get("/api/v1/share/:id",auth, async(req,res)=>{
+app.get("/api/v1/share/:id", async(req,res)=>{
     try {
 
         const {id} = req.params
-        const currentUser = req.user
+        // const currentUser = req.user
 
-        if(!currentUser){
-            res.status(401).json({
-                successs:false,
-                message:"Please login before accessing shared brain"
-            })
-            return
-        }
+        // if(!currentUser){
+        //     res.status(401).json({
+        //         successs:false,
+        //         message:"Please login before accessing shared brain"
+        //     })
+        //     return
+        // }
 
-        if(id == currentUser._id.toString()){
-            res.status(401).json({
-                    success:false,
-                    message:"You are trying to access your own brain"
-            })
-            return
-        }
+        // if(id == currentUser._id.toString()){
+        //     res.status(401).json({
+        //             success:false,
+        //             message:"You are trying to access your own brain"
+        //     })
+        //     return
+        // }
 
         // console.log(id)
 
-        const user = await User.findById(id).select("name email isPrivate content").populate("content")
+        const user = await User.findById(id).select("name email isPrivate content").populate({
+            path:"content",
+            populate:{
+                path:"tag"
+            }
+        })
 
         if(!user){
             res.status(404).json({
@@ -369,9 +374,10 @@ app.get("/api/v1/share/:id",auth, async(req,res)=>{
         }
 
         if(user.isPrivate){
-            res.status(401).json({
+            res.status(200).json({
                 success:false,
-                message:"The brain you are trying to access is Private"
+                message:"The brain you are trying to access is Private",
+                isPrivate:true
             })
             return
         }
@@ -379,6 +385,7 @@ app.get("/api/v1/share/:id",auth, async(req,res)=>{
         res.status(200).json({
             success:true,
             message:"Successfully got shared brain",
+            isPrivate:false,
             user
         })
         return
@@ -409,7 +416,9 @@ try {
         return
     }
 
-    const user = await User.findByIdAndUpdate(id,{isPrivate:isPrivate})
+    const user = await User.findByIdAndUpdate(id,{isPrivate:isPrivate},{
+        returnOriginal: false
+      })
 
     
 

@@ -28,3 +28,9 @@ export const changeBrainPrivacy = async (id, privacy, token)=> {
     const response = await apiConnector("PUT", "http://localhost:4000/api/v1/share/"+id , {isPrivate:privacy}, {Authorisation: token})
     return response
 }
+
+export const getSharedBrain = async (id)=> {
+    
+    const response = await apiConnector("GET", "http://localhost:4000/api/v1/share/"+id )
+    return response
+}

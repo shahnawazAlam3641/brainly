@@ -37,7 +37,7 @@ const DashboardBody = () => {
   // response.data.user.content = undefined
 
   // navigate("/dashboard")
-  console.log("first");
+  // console.log("first");
   useEffect(() => {
     fetchDetails();
   });

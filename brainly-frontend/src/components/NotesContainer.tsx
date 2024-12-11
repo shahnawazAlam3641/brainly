@@ -12,6 +12,8 @@ import LockIcon from "../svgs/LockIcon";
 import DropdownIcon from "../svgs/DropdownIcon";
 import LinkIcon from "../svgs/LinkIcon";
 import { setSignupData } from "../slices/authSlice";
+import toast from "react-hot-toast";
+import GlobeIcon from "../svgs/GlobeIcon";
 
 const NotesContainer = ({ currentTab, setCurrentTab }) => {
   const {
@@ -27,7 +29,7 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
   const dispatch = useDispatch();
 
   const currenUser = useSelector((state) => state.auth.signupData);
-  console.log(currenUser);
+  // console.log(currenUser?.isPrivate);
   const token = useSelector((state) => state.auth.token);
   const content = useSelector((state) => state.notes.content);
 
@@ -36,10 +38,12 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
   const [privacyModal, setPrivacyModal] = useState(false);
   const [privacy, setPrivacy] = useState("");
 
+  // console.log(privacy);
+
   const handleAddContent = async (data) => {
-    console.log(data);
+    // console.log(data);
     const tags = data.Tag.split(",").map((elem) => elem.trim());
-    console.log(tags);
+    // console.log(tags);
     const payload = {
       title: data.Title,
       link: data.Link,
@@ -50,20 +54,21 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
     const createdContent = await addCard(payload, token);
     dispatch(pushNote(createdContent?.data?.content));
     setAddModal(false);
-    console.log(createdContent);
+    // console.log(createdContent);
   };
 
   const fetchUserNotes = async () => {
     const allNotes = await getUserNotes(token);
     dispatch(setNotes(allNotes?.data?.contents));
+    setCardsToShow(allNotes?.data?.contents);
   };
 
   const updatePrivacyHandler = async () => {
     let isPrivate;
-    console.log(privacy);
+    // console.log(privacy);
     if (privacy == "Restricted") {
       isPrivate = true;
-    } else {
+    } else if (privacy == "Anyone with link") {
       isPrivate = false;
     }
 
@@ -78,28 +83,33 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
     fetchUserNotes();
     console.log(currenUser);
 
-    if (currenUser && currenUser.isPrivate) {
+    if (currenUser && currenUser?.isPrivate) {
+      console.log("changed to restricted");
       setPrivacy("Restricted");
     } else {
+      console.log("changed to anyone");
       setPrivacy("Anyone with link");
     }
-  }, []);
+  }, [currenUser]);
 
   useEffect(() => {
+    console.log("??????????????", currentTab);
     if (currentTab == "All") {
+      console.log("ran allllllllllll");
       setCardsToShow(content);
     } else {
+      console.log("ran filteringgggggggggg");
       const filteredCards = content.filter((card) => {
         return card.type == currentTab;
       });
-
+      console.log(filteredCards);
       setCardsToShow(filteredCards);
     }
-  }, [currentTab]);
+  }, [currentTab, content]);
 
   return (
     <>
-      <div className="flex flex-col gap-5 w-full overflow-y-auto  overflow-x-hidden">
+      <div className="flex flex-col gap-5 w-full overflow-y-auto bg-slate-50 overflow-x-hidden">
         <div className="flex justify-between w-full p-8">
           <p className="text-3xl font-medium text-slate-700">All Notes</p>
           <div className=" flex gap-4">
@@ -119,17 +129,16 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
         </div>
 
         {/* {card container} */}
-        {content.length == 0 && (
+        {cardsToShow.length == 0 && (
           <p className="text-2xl text-slate-700 p-8">
-            {" "}
             No content Show.....Add one now
           </p>
         )}
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-8 px-8">
+        <div className="columns-1 md:columns-2 lg:columns-3 max-[1080px] mx-auto gap-5 py-5  px-8">
           {/* card */}
           {cardsToShow.map((card) => {
-            return <Card token={token} card={{ ...card }} />;
+            return <Card key={card._id} token={token} card={{ ...card }} />;
           })}
           {/* <Card/>
               <Card/>
@@ -154,7 +163,8 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
             />
 
             <div className="flex gap-1 p-2">
-              <LockIcon />
+              {privacy == "Restricted" ? <LockIcon /> : <GlobeIcon />}
+
               <div className="flex flex-col ">
                 <div
                   onClick={() => setPrivacyModal(!privacyModal)}
@@ -197,13 +207,13 @@ const NotesContainer = ({ currentTab, setCurrentTab }) => {
 
           <div className="flex justify-between p-2">
             <Button
-              onPress={() =>
+              onPress={() => {
                 navigator.clipboard.writeText(
                   window.location.href.replace("dashboard", "share") +
                     "/" +
                     currenUser?._id
-                )
-              }
+                );
+              }}
               text="Copy Link"
               isPrimary={false}
               startIcon={<LinkIcon />}

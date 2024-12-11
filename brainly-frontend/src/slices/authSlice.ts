@@ -2,7 +2,21 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface SignupData {
+    _id: string;
+    name:string
+    email:string
+
+    isPrivate: boolean;
+    createdAt:string
+    updatedAt:string
+    
+  }
+
+const initialState:{
+    signupData: SignupData | null; // Allow it to be null initially
+  token: string | null;
+} = {
     signupData:null,
     token:localStorage.getItem("token")
     
@@ -17,6 +31,12 @@ const authSlice = createSlice({
         },
         setToken(state, action) {
             state.token = action.payload;
+        },
+        setIsPrivate(state, action) {
+            if(state?.signupData){
+                state.signupData.isPrivate = action.payload;
+            }
+            
           },
     },
 })
