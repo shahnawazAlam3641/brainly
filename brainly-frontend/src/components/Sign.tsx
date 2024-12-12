@@ -133,16 +133,17 @@ const Sign = () => {
         navigate("/dashboard");
         toast.dismiss(toastId);
         toast.success("Sign Up Successfull");
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         console.log(error);
         toast.dismiss(toastId);
-        toast.error("Sign Up Failed");
+        toast.error(error.response.data.message);
       }
     }
   };
 
   return (
-    <div className=" py-4 flex  h-[90vh] w-[100vw] overflow-x-hidden justify-between gap-5 items-center bg-slate-50">
+    <div className=" py-4 flex overflow-y-hidden h-[90vh] w-[100vw] overflow-x-hidden justify-between gap-5 items-center bg-slate-50">
       <img src={SignGraphic} className="hidden md:block max-w-[50vw] mx-auto" />
 
       <div className="min-w-[50%] mx-auto">
@@ -166,27 +167,53 @@ const Sign = () => {
                 className="border border-purple-200 border-solid  py-2 px-4  rounded-md"
                 placeholder="Name"
                 type="text"
-                {...register("Name", { required: true })}
+                {...register("Name", {
+                  required: true,
+                  minLength: {
+                    value: 3,
+                    message: "Name must be at least 3 characters long",
+                  },
+                })}
               />
             )}
-            {errors.Name && <p className="text-red-300">Name is required.</p>}
+            {errors.Name && (
+              <p className="text-red-300">
+                Name must be at least 3 characters long
+              </p>
+            )}
             <input
               className="border border-purple-200 border-solid py-2 px-4  rounded-md"
               placeholder="Email"
               type="email"
-              {...register("Email", { required: true })}
+              {...register("Email", {
+                required: true,
+                minLength: {
+                  value: 5,
+                  message: "Email must be at least 5 characters long",
+                },
+              })}
             />
             {errors.Email && (
-              <p className="text-red-300">Email name is required.</p>
+              <p className="text-red-300">
+                Email must be at least 5 characters long
+              </p>
             )}
             <input
               className="border border-purple-200 border-solid py-2 px-4  rounded-md"
               placeholder="Password"
               type="password"
-              {...register("Password", { required: true })}
+              {...register("Password", {
+                required: true,
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters long",
+                },
+              })}
             />
-            {errors.age && (
-              <p className="text-red-300">Please enter number for age.</p>
+            {errors.Password && (
+              <p className="text-red-300">
+                Password must be at least 8 characters long
+              </p>
             )}
             <Button
               isPrimary={true}

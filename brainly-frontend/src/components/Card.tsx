@@ -13,7 +13,7 @@ import LinkIcon from "../svgs/LinkIcon";
 interface cardProp {
   card: NoteDoc;
   token: string | null;
-  key: string;
+  keyValue?: string;
   isShared?: boolean;
 }
 
@@ -33,10 +33,7 @@ const Card = (props: cardProp) => {
 
   // console.log(props.card._id)
   return (
-    <div
-      key={props.key}
-      className="flex flex-col gap-2 mb-5 break-inside-avoid p-4 shadow-slate-400  bg-white border shadow-sm max-w-72 rounded-lg"
-    >
+    <div className="flex flex-col gap-2 mb-5 break-inside-avoid p-4 shadow-slate-400  bg-white border shadow-sm max-w-72 rounded-lg">
       {/* head */}
       <div className="flex justify-between">
         <div className="flex gap-1">
