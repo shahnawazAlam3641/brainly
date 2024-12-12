@@ -11,7 +11,7 @@ export const createContent = async (req:Request, res:Response) =>{
     try {
 
         const requestBodySchema = z.object({
-            title:z.string().email().min(5).max(50),
+            title:z.string().min(5).max(50),
             link:z.string(),
             type:z.enum(["Twitter(X)", "Youtube","Document", "Link"]),
             tags:z.array(z.string())
@@ -184,7 +184,7 @@ export const getSharedContent = async(req:Request, res:Response)=>{
 
         const idSchema = z.string()
 
-        const isparsedDataSuccess = idSchema.safeParse(idSchema)
+        const isparsedDataSuccess = idSchema.safeParse(req.params.id)
 
         if(!isparsedDataSuccess.success){
             res.status(401).json({
