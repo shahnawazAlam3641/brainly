@@ -19,30 +19,23 @@ const DashboardBody = () => {
 
   const fetchDetails = async () => {
     if (localStorage.getItem("token")) {
-      const toastId = toast.loading("Hellllloooooo");
+      const toastId = toast.loading("Loading");
       const userDetails = await getUserDetails(localStorage.getItem("token"));
       dispatch(setSignupData(userDetails.data.user));
       toast.dismiss(toastId);
+
       if (!userDetails) {
         localStorage.removeItem("token");
         navigate("/signin");
-      } else {
-        // navigate("/dashboard");
-        console.log("pending for now");
       }
     } else {
       navigate("/signin");
     }
   };
-  // dispatch(setToken(token))
-  // dispatch(setNotes(response?.data?.user?.content))
-  // response.data.user.content = undefined
 
-  // navigate("/dashboard")
-  // console.log("first");
   useEffect(() => {
     fetchDetails();
-  });
+  }, []);
 
   return (
     <div className="flex max-h-[90vh] relative overflow-y-hidden">
