@@ -1,6 +1,5 @@
 // import React, { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
-
 import Button from "./Button";
 import ShareIcon from "../svgs/ShareIcon";
 import PlusIcon from "../svgs/PlusIcon";
@@ -9,7 +8,6 @@ import { addCard, changeBrainPrivacy, getUserNotes } from "../utils/operations";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { NoteDoc, pushNote, setNotes } from "../slices/notesSlice";
-// import { useLocation } from "react-router";
 import LockIcon from "../svgs/LockIcon";
 import DropdownIcon from "../svgs/DropdownIcon";
 import LinkIcon from "../svgs/LinkIcon";
@@ -193,7 +191,7 @@ const NotesContainer = (props: propsData) => {
       // console.log("changed to anyone");
       setPrivacy("Anyone with link");
     }
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     // console.log("??????????????", currentTab);
@@ -234,20 +232,19 @@ const NotesContainer = (props: propsData) => {
         {/* {card container} */}
         {cardsToShow.length == 0 && (
           <p className="text-2xl text-slate-700 p-8">
-            No content Show.....Add one now
+            No content to Show. Add one now
           </p>
         )}
 
         <div className="columns-1 md:columns-2 lg:columns-3 max-[1080px] mx-auto gap-5 py-5  px-8">
           {/* card */}
           {cardsToShow.map((card) => {
-            return <Card key={card._id} token={token} card={{ ...card }} />;
+            return (
+              <div key={card._id}>
+                <Card token={token} card={{ ...card }} />
+              </div>
+            );
           })}
-          {/* <Card/>
-              <Card/>
-              <Card/>
-              <Card/>
-              <Card/> */}
         </div>
       </div>
 
@@ -355,9 +352,13 @@ const NotesContainer = (props: propsData) => {
                 className="border border-purple-200 border-solid  py-2 px-4  rounded-md"
                 placeholder="Title"
                 type="text"
-                {...register("Title", { required: true })}
+                {...register("Title", { required: true, minLength: 3 })}
               />
-              {errors.Name && <p>Title is required.</p>}
+              {errors.Title && (
+                <p className="text-red-300">
+                  Title must be atleat of 3 Character
+                </p>
+              )}
 
               <input
                 className="border border-purple-200 border-solid py-2 px-4  rounded-md"
@@ -365,7 +366,7 @@ const NotesContainer = (props: propsData) => {
                 type="text"
                 {...register("Link", { required: true })}
               />
-              {errors.Link && <p>Link name is required.</p>}
+              {errors.Link && <p className="text-red-300">Link is required.</p>}
 
               <select
                 className=" border border-purple-200 border-solid  py-2 px-4  rounded-md w-full"
