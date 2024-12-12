@@ -57,11 +57,24 @@ const Navbar = () => {
           <p className="flex gap-2 font-bold cursor-pointer text-slate-600 justify-center items-center  px-2 py-1 rounded">
             {userInfo.name} <DropdownIcon />
           </p>
-          <div className="absolute top-full right-0 hidden group-hover:block">
+          <div className="absolute top-full right-0  px-1 bg-white hidden group-hover:block shadow-black shadow-sm">
             {/* <Button onPress={logoutHandler} isPrimary={false} text="Logout" /> */}
+
+            <p
+              onClick={() => navigate("/")}
+              className="p-1 px-3 my-1 transition-all duration-200 rounded-sm hover:bg-slate-200 cursor-pointer bg-white "
+            >
+              Home
+            </p>
+            <p
+              onClick={() => navigate("/dashboard")}
+              className="p-1 px-3 my-1 transition-all duration-200 rounded-sm hover:bg-slate-200 cursor-pointer bg-white "
+            >
+              Dashboard
+            </p>
             <p
               onClick={logoutHandler}
-              className="p-1 px-3 my-1 transition-all duration-200 rounded-sm hover:bg-slate-200 cursor-pointer bg-white shadow-black shadow-sm"
+              className="p-1 px-3 my-1 transition-all duration-200 rounded-sm hover:bg-slate-200 cursor-pointer bg-white "
             >
               Logout
             </p>
