@@ -11,7 +11,7 @@ export const createContent = async (req:Request, res:Response) =>{
     try {
 
         const requestBodySchema = z.object({
-            title:z.string().min(5).max(50),
+            title:z.string().min(3).max(50),
             link:z.string(),
             type:z.enum(["Twitter(X)", "Youtube","Document", "Link"]),
             tags:z.array(z.string())
