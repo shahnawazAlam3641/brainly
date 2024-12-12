@@ -1,1 +1,1 @@
-{"root":["./types.d.ts","./src/index.ts","./src/config/database.ts","./src/middlewares/auth.ts","./src/models/content.ts","./src/models/tag.ts","./src/models/user.ts"],"version":"5.7.2"}
+{"root":["./types.d.ts","./src/index.ts","./src/interface.ts","./src/config/database.ts","./src/controllers/auth.ts","./src/controllers/content.ts","./src/middlewares/auth.ts","./src/models/content.ts","./src/models/tag.ts","./src/models/user.ts"],"version":"5.7.2"}
