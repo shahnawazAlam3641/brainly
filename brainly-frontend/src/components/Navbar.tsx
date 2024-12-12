@@ -38,7 +38,10 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center shadow-lg z-10 relative px-8 ">
-      <div className="flex items-center gap-4  min-h-[10vh] ">
+      <div
+        onClick={() => navigate("/")}
+        className="flex items-center gap-4  min-h-[10vh] cursor-pointer "
+      >
         <BrainIcon />
         <p className="text-xl md:text-3xl font-semibold text-slate-700">
           Brainly
