@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "./Button";
+import Button from "../common/Button";
 import { useNavigate } from "react-router";
-import HeroSS from "../assets/HeroSS.png";
+import HeroSS from "../../assets/HeroSS.png";
 
 const Hero = () => {
   const navigate = useNavigate();

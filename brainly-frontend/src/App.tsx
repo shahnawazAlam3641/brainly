@@ -9,14 +9,12 @@ import SharedBrain from "./components/pages/SharedBrain";
 function App() {
   return (
     <BrowserRouter>
-      {/* <div className="max-w-[100vw]"> */}
       <Navbar />
       <Routes>
         <Route index element={<Hero />} />
         <Route path="/signin" element={<Sign />} />
         <Route path="/dashboard" element={<DashboardBody />} />
         <Route path="/share/:id" element={<SharedBrain />} />
-
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

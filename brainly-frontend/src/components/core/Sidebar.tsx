@@ -1,9 +1,9 @@
 // import React from "react";
-import TwitterIcon from "../svgs/TwitterIcon";
-import YoutubeIcon from "../svgs/YoutubeIcon";
-import DocumentIcon from "../svgs/DocumentIcon";
-import LinkIcon from "../svgs/LinkIcon";
-import { AllIcon } from "../svgs/AllIcon";
+import TwitterIcon from "../../svgs/TwitterIcon";
+import YoutubeIcon from "../../svgs/YoutubeIcon";
+import DocumentIcon from "../../svgs/DocumentIcon";
+import LinkIcon from "../../svgs/LinkIcon";
+import { AllIcon } from "../../svgs/AllIcon";
 
 interface propsData {
   currentTab: string;

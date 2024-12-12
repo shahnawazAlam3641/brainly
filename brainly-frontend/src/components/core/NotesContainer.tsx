@@ -170,11 +170,7 @@ const NotesContainer = (props: propsData) => {
         <div className="columns-1 md:columns-2 lg:columns-3 max-[1080px] mx-auto gap-5 py-5  px-8">
           {/* card */}
           {cardsToShow.map((card) => {
-            return (
-              <div key={card._id}>
-                <Card token={token} card={{ ...card }} />
-              </div>
-            );
+            return <Card key={card._id} token={token} card={{ ...card }} />;
           })}
         </div>
       </div>

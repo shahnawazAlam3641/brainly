@@ -1,14 +1,14 @@
 // import React, { useState } from "react";
 // import { useState } from "react";
-import DeleteIcon from "../svgs/DeleteIcon";
+import DeleteIcon from "../../svgs/DeleteIcon";
 // import ShareIcon from "../svgs/ShareIcon";
-import DocumentIcon from "../svgs/DocumentIcon";
-import { deleteUserNote } from "../utils/operations";
+import DocumentIcon from "../../svgs/DocumentIcon";
+import { deleteUserNote } from "../../utils/operations";
 import { useDispatch } from "react-redux";
-import { deleteNote, NoteDoc } from "../slices/notesSlice";
-import YoutubeIcon from "../svgs/YoutubeIcon";
-import TwitterIcon from "../svgs/TwitterIcon";
-import LinkIcon from "../svgs/LinkIcon";
+import { deleteNote, NoteDoc } from "../../slices/notesSlice";
+import YoutubeIcon from "../../svgs/YoutubeIcon";
+import TwitterIcon from "../../svgs/TwitterIcon";
+import LinkIcon from "../../svgs/LinkIcon";
 
 interface cardProp {
   card: NoteDoc;

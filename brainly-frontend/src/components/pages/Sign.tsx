@@ -1,16 +1,13 @@
 // import React, { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
-import Button from "./Button";
+import Button from "../common/Button";
 import { useForm } from "react-hook-form";
-import SignGraphic from "../assets/LoginGraphic.svg";
-// import { apiEndpoints } from '../utils/apiEndpoints'
-import { apiConnector } from "../utils/apiConnector";
-// import { setSignupData, setToken } from '../slices/authSlice'
-// import { setNotes } from '../slices/notesSlice'
+import SignGraphic from "../../assets/LoginGraphic.svg";
+import { apiConnector } from "../../utils/apiConnector";
 import { useNavigate } from "react-router";
 import { FieldValues } from "react-hook-form";
-import { setSignupData, setToken } from "../slices/authSlice";
-import { setNotes } from "../slices/notesSlice";
+import { setSignupData, setToken } from "../../slices/authSlice";
+import { setNotes } from "../../slices/notesSlice";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 

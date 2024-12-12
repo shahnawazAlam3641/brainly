@@ -1,5 +1,5 @@
 import React from "react";
-import ErrorGraphic from "../assets/ErrorGraphic.svg";
+import ErrorGraphic from "../../assets/ErrorGraphic.svg";
 
 const Error = () => {
   return (
