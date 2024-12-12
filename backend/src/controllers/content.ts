@@ -3,11 +3,30 @@ import Tag from "../models/Tag"
 import { Types } from "mongoose"
 import Content from "../models/Content"
 import User from "../models/User"
+import { z } from "zod"
 
 
 export const createContent = async (req:Request, res:Response) =>{
 
     try {
+
+        const requestBodySchema = z.object({
+            title:z.string().email().min(5).max(50),
+            link:z.string(),
+            type:z.enum(["Twitter(X)", "Youtube","Document", "Link"]),
+            tags:z.array(z.string())
+        })
+
+        const isparsedDataSuccess = requestBodySchema.safeParse(req.body)
+
+        if(!isparsedDataSuccess.success){
+            res.status(401).json({
+                success:false,
+                message:isparsedDataSuccess.error.issues[0].message,
+                error:isparsedDataSuccess.error
+            })
+            return
+        }
         
         const {title,link,type,tags} = req.body
 
@@ -109,6 +128,22 @@ export const fetchContent = async (req:Request, res:Response)=>{
 
 export const deleteContent = async(req:Request, res:Response)=>{
     try {
+
+        const requestBodySchema = z.object({
+            noteId:z.string()
+        })
+
+        const isparsedDataSuccess = requestBodySchema.safeParse(req.body)
+
+        if(!isparsedDataSuccess.success){
+            res.status(401).json({
+                success:false,
+                message:isparsedDataSuccess.error.issues[0].message,
+                error:isparsedDataSuccess.error
+            })
+            return
+        }
+        
         const {noteId} = req.body
 
         const currentUser = req.user
@@ -146,6 +181,19 @@ export const deleteContent = async(req:Request, res:Response)=>{
 
 export const getSharedContent = async(req:Request, res:Response)=>{
     try {
+
+        const idSchema = z.string()
+
+        const isparsedDataSuccess = idSchema.safeParse(idSchema)
+
+        if(!isparsedDataSuccess.success){
+            res.status(401).json({
+                success:false,
+                message:isparsedDataSuccess.error.issues[0].message,
+                error:isparsedDataSuccess.error
+            })
+            return
+        }
 
         const {id} = req.params
         // const currentUser = req.user
@@ -213,6 +261,22 @@ export const getSharedContent = async(req:Request, res:Response)=>{
 
 export const changeContentPrivacy = async(req:Request, res:Response)=>{
     try {
+        const requestBodySchema = z.object({
+            isPrivate:z.boolean()
+        })
+
+        const isparsedDataSuccess = requestBodySchema.safeParse(req.body)
+
+        if(!isparsedDataSuccess.success){
+            res.status(401).json({
+                success:false,
+                message:isparsedDataSuccess.error.issues[0].message,
+                error:isparsedDataSuccess.error
+            })
+            return
+        }
+
+
         const {id} = req.params
         const {isPrivate} = req.body
     

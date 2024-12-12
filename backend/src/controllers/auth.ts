@@ -2,9 +2,28 @@ import { Request, Response } from "express"
 import User from "../models/User"
 import bcrypt from "bcrypt"
 import jwt, { JwtPayload } from "jsonwebtoken"
+import { z } from "zod"
 
 export const signup = async (req:Request, res:Response) =>{
     try {
+
+        const requestBodySchema = z.object({
+            email:z.string().email().min(5).max(100),
+            password:z.string().min(8).max(100),
+            name:z.string().min(3).max(50)
+        })
+
+        const isparsedDataSuccess = requestBodySchema.safeParse(req.body)
+
+        if(!isparsedDataSuccess.success){
+            res.status(401).json({
+                success:false,
+                message:isparsedDataSuccess.error.issues[0].message,
+                error:isparsedDataSuccess.error
+            })
+            return
+        }
+
      const {email, password, name} = req.body
  
      if(!email || ! password|| !name){
@@ -67,6 +86,23 @@ export const signup = async (req:Request, res:Response) =>{
 
  export const signin = async (req:Request, res:Response) =>{
     try {
+
+        const requestBodySchema = z.object({
+            email:z.string().email().min(5).max(100),
+            password:z.string().min(8).max(100)
+        })
+
+        const isparsedDataSuccess = requestBodySchema.safeParse(req.body)
+
+        if(!isparsedDataSuccess.success){
+            res.status(401).json({
+                success:false,
+                message:isparsedDataSuccess.error.issues[0].message,
+                error:isparsedDataSuccess.error
+            })
+            return
+        }
+
         const {email,password} = req.body
 
         if(!email || !password){
@@ -150,6 +186,19 @@ export const signup = async (req:Request, res:Response) =>{
 export const fetchUserDetails = async(req:Request, res:Response)=>{
 
     try {
+
+        const tokenSchema = z.string()
+
+        const isparsedDataSuccess = tokenSchema.safeParse(req.header("Authorisation"))
+
+        if(!isparsedDataSuccess.success){
+            res.status(401).json({
+                success:false,
+                message:isparsedDataSuccess.error.issues[0].message,
+                error:isparsedDataSuccess.error
+            })
+            return
+        }
 
         // console.log(req.header("Authorisation"))
         
