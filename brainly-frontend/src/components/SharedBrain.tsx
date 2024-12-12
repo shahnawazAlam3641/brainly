@@ -8,6 +8,7 @@ import Card from "./Card";
 import { RootState } from "../reducer";
 import { NoteDoc } from "../slices/notesSlice";
 import toast from "react-hot-toast";
+import Shimmer from "./Shimmer";
 
 interface sharedBrainData {
   _id: string;
@@ -28,20 +29,30 @@ const SharedBrain = () => {
   console.log(brain);
 
   const fetchBrainDetails = async () => {
-    if (id) {
-      const response = await getSharedBrain(id);
-      // console.log("firstfirstfirstfirstfirstfirst");
-      console.log(response.data.isPrivate);
+    const toastId = toast.loading("Loading");
+    try {
+      if (id) {
+        const response = await getSharedBrain(id);
+        // console.log("firstfirstfirstfirstfirstfirst");
+        console.log(response.data.isPrivate);
 
-      if (response.data.isPrivate) {
-        console.log(response.data);
-        setBrain(response.data);
+        if (response.data.isPrivate) {
+          console.log(response.data);
+          setBrain(response.data);
+        } else {
+          console.log(response);
+          setBrain(response.data.user);
+        }
+
+        toast.dismiss(toastId);
       } else {
-        console.log(response);
-        setBrain(response.data.user);
+        toast.error("Invalid Link, Could not get Brain details");
       }
-    } else {
-      toast.error("Invalid Link, Could not get Brain details");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error);
+      toast.dismiss(toastId);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -50,11 +61,20 @@ const SharedBrain = () => {
   }, [id]);
 
   return (
-    <div className="flex flex-col p-5 bg-slate-50">
+    <div className="flex flex-col p-5 h-[90vh] bg-slate-50">
       {!brain ? (
-        <div>Loadinggggg</div>
+        // <p className="text-2xl font-bold text-center text-slate-800 ">
+        //   Loading Content
+        // </p>
+        <div className="columns-1 md:columns-2 lg:columns-3 max-[1080px] mx-auto gap-5 py-5  px-8">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <Shimmer key={index} />
+          ))}
+        </div>
       ) : brain.isPrivate ? (
-        <div>The brain you are trying to access is Private</div>
+        <p className="text-2xl font-bold text-center text-slate-800 ">
+          The brain you are trying to access is Private
+        </p>
       ) : (
         <>
           <p className="text-slate-700 text-2xl font-semibold px-4">{`Welcome to ${brain.name}'s Brain👋`}</p>
@@ -62,12 +82,9 @@ const SharedBrain = () => {
             {/* card */}
             {brain.content.map((card) => {
               return (
-                <Card
-                  key={card._id}
-                  isShared={true}
-                  token={token}
-                  card={{ ...card }}
-                />
+                <div key={card._id}>
+                  <Card isShared={true} token={token} card={{ ...card }} />
+                </div>
               );
             })}
             {/* <Card/>
