@@ -40,7 +40,9 @@ const Navbar = () => {
     <div className="flex justify-between items-center shadow-lg z-10 relative px-8 ">
       <div className="flex items-center gap-4  min-h-[10vh] ">
         <BrainIcon />
-        <p className="text-3xl font-semibold text-slate-700">Brainly</p>
+        <p className="text-xl md:text-3xl font-semibold text-slate-700">
+          Brainly
+        </p>
       </div>
 
       {!userInfo ? (

@@ -24,7 +24,7 @@ const Hero = () => {
       </div>
       <img
         src={HeroSS}
-        className="w-[80vw] max-w-[95vw] rounded-lg border shadow-slate-200 shadow-xl mb-10"
+        className="w-[80vw] max-w-[95vw] rounded-lg border shadow-slate-200 shadow-xl mb-10 grayscale  transition-all duration-500 hover:grayscale-0"
       />
     </div>
   );
