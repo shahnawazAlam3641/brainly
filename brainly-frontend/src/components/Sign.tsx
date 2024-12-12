@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Button from "./Button";
 import { useForm } from "react-hook-form";
-import SignGraphic from "../assets/Computer login-rafiki.svg";
+import SignGraphic from "../assets/LoginGraphic.svg";
 // import { apiEndpoints } from '../utils/apiEndpoints'
 import { apiConnector } from "../utils/apiConnector";
 // import { setSignupData, setToken } from '../slices/authSlice'
