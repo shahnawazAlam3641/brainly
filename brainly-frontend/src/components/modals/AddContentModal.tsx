@@ -1,6 +1,6 @@
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import Button from "../Button";
+import Button from "../common/Button";
 
 interface propsData {
   handleAddContent: (data: FieldValues) => void;

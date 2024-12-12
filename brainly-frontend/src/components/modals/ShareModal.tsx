@@ -4,7 +4,7 @@ import { RootState } from "../../reducer";
 import LockIcon from "../../svgs/LockIcon";
 import GlobeIcon from "../../svgs/GlobeIcon";
 import DropdownIcon from "../../svgs/DropdownIcon";
-import Button from "../Button";
+import Button from "../common/Button";
 import toast from "react-hot-toast";
 import LinkIcon from "../../svgs/LinkIcon";
 

@@ -1,18 +1,22 @@
 // import React, { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
-import Button from "./Button";
-import ShareIcon from "../svgs/ShareIcon";
-import PlusIcon from "../svgs/PlusIcon";
-import Card from "./Card";
-import { addCard, changeBrainPrivacy, getUserNotes } from "../utils/operations";
+import Button from "../common/Button";
+import ShareIcon from "../../svgs/ShareIcon";
+import PlusIcon from "../../svgs/PlusIcon";
+import Card from "../common/Card";
+import {
+  addCard,
+  changeBrainPrivacy,
+  getUserNotes,
+} from "../../utils/operations";
 import { useDispatch, useSelector } from "react-redux";
-import { NoteDoc, pushNote, setNotes } from "../slices/notesSlice";
-import { setSignupData } from "../slices/authSlice";
+import { NoteDoc, pushNote, setNotes } from "../../slices/notesSlice";
+import { setSignupData } from "../../slices/authSlice";
 import toast from "react-hot-toast";
-import { RootState } from "../reducer";
+import { RootState } from "../../reducer";
 import { FieldValues } from "react-hook-form";
-import ShareModal from "./modals/ShareModal";
-import AddContentModal from "./modals/AddContentModal";
+import ShareModal from "../modals/ShareModal";
+import AddContentModal from "../modals/AddContentModal";
 
 interface propsData {
   currentTab: string;

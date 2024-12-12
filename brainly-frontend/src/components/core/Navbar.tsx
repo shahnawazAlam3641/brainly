@@ -1,13 +1,14 @@
 // import React, { useEffect } from "react";
 import { useEffect } from "react";
-import BrainIcon from "../svgs/BrainIcon";
+import BrainIcon from "../../svgs/BrainIcon";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "./Button";
+import Button from "../common/Button";
 import { Link, useNavigate } from "react-router";
-import { getUserDetails } from "../utils/operations";
-import { setSignupData, setToken } from "../slices/authSlice";
-import DropdownIcon from "../svgs/DropdownIcon";
-import { RootState } from "../reducer";
+import { getUserDetails } from "../../utils/operations";
+import { setSignupData, setToken } from "../../slices/authSlice";
+import DropdownIcon from "../../svgs/DropdownIcon";
+import { RootState } from "../../reducer";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -16,9 +17,15 @@ const Navbar = () => {
 
   const checkUser = async () => {
     if (localStorage.getItem("token") && !userInfo) {
-      const user = await getUserDetails(localStorage.getItem("token"));
-      // console.log(user)
-      dispatch(setSignupData(user?.data?.user));
+      const toastId = toast.loading("Fetching User details");
+      try {
+        const user = await getUserDetails(localStorage.getItem("token"));
+        dispatch(setSignupData(user?.data?.user));
+        toast.dismiss(toastId);
+      } catch (error) {
+        console.log(error);
+        toast.dismiss(toastId);
+      }
     }
     // else{
     //   navigate("/signin")

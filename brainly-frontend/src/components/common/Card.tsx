@@ -31,12 +31,11 @@ const Card = (props: cardProp) => {
     }
   };
 
-  // console.log(props.card._id)
   return (
     <div className="flex flex-col gap-2 mb-5 break-inside-avoid p-4 shadow-slate-400  bg-white border shadow-sm max-w-72 rounded-lg">
       {/* head */}
-      <div className="flex justify-between">
-        <div className="flex gap-1">
+      <div className="flex justify-between items-center">
+        <div className="flex gap-2   items-center">
           {props.card.type == "Youtube" ? (
             <YoutubeIcon />
           ) : props.card.type == "Document" ? (
@@ -95,28 +94,6 @@ const Card = (props: cardProp) => {
             allowFullScreen
           ></iframe>
         )}
-
-        {/* {props.card.type == "Link" && (
-          <a
-            href={props.card.link}
-            className="hover:underline text-blue-500"
-            target="_blank"
-          >
-            {" "}
-            {props.card.link}{" "}
-          </a>
-        )}
-
-        {props.card.type == "Document" && (
-          <a
-            href={props.card.link}
-            className="hover:underline text-blue-500"
-            target="_blank"
-          >
-            {" "}
-            {props.card.link}{" "}
-          </a>
-        )} */}
       </div>
 
       {/* tag container */}
@@ -137,7 +114,7 @@ const Card = (props: cardProp) => {
         </div>
 
         <p className="text-slate-400 font-semibold mt-2">
-          Added on - {createdAt.toLocaleDateString()}
+          Added on - {createdAt.toDateString()}
         </p>
       </div>
     </div>

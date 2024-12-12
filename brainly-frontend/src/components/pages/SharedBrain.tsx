@@ -1,14 +1,13 @@
 // import React, { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
-// import Sidebar from "./Sidebar";
 import { useParams } from "react-router";
-import { getSharedBrain } from "../utils/operations";
+import { getSharedBrain } from "../../utils/operations";
 import { useSelector } from "react-redux";
-import Card from "./Card";
-import { RootState } from "../reducer";
-import { NoteDoc } from "../slices/notesSlice";
+import Card from "../common/Card";
+import { RootState } from "../../reducer";
+import { NoteDoc } from "../../slices/notesSlice";
 import toast from "react-hot-toast";
-import Shimmer from "./Shimmer";
+import Shimmer from "../common/Shimmer";
 
 interface sharedBrainData {
   _id: string;
@@ -63,9 +62,6 @@ const SharedBrain = () => {
   return (
     <div className="flex flex-col p-5 h-[90vh] bg-slate-50">
       {!brain ? (
-        // <p className="text-2xl font-bold text-center text-slate-800 ">
-        //   Loading Content
-        // </p>
         <div className="columns-1 md:columns-2 lg:columns-3 max-[1080px] mx-auto gap-5 py-5  px-8">
           {Array.from({ length: 8 }).map((_, index) => (
             <Shimmer key={index} />
@@ -87,11 +83,6 @@ const SharedBrain = () => {
                 </div>
               );
             })}
-            {/* <Card/>
-              <Card/>
-              <Card/>
-              <Card/>
-              <Card/> */}
           </div>
         </>
       )}

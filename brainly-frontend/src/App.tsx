@@ -1,10 +1,10 @@
-import Navbar from "./components/Navbar";
+import Navbar from "./components/core/Navbar";
 import { BrowserRouter, Route, Routes } from "react-router";
-import Hero from "./components/Hero";
-import Sign from "./components/Sign";
-import DashboardBody from "./components/DashboardBody";
-import Error from "./components/Error";
-import SharedBrain from "./components/SharedBrain";
+import Hero from "./components/pages/Hero";
+import Sign from "./components/pages/Sign";
+import DashboardBody from "./components/pages/DashboardBody";
+import Error from "./components/pages/Error";
+import SharedBrain from "./components/pages/SharedBrain";
 
 function App() {
   return (
@@ -19,14 +19,6 @@ function App() {
 
         <Route path="*" element={<Error />} />
       </Routes>
-      {/* </div> */}
-      {/* <>
-      
-      <div className="flex">
-        <Sidebar/>
-        <NotesContainer/>
-      </div>
-    </> */}
     </BrowserRouter>
   );
 }

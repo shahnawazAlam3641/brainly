@@ -1,17 +1,15 @@
 // import React, { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
-import NotesContainer from "./NotesContainer";
-import { setSignupData } from "../slices/authSlice";
+import Sidebar from "../core/Sidebar";
+import NotesContainer from "../core/NotesContainer";
+import { setSignupData } from "../../slices/authSlice";
 // import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails } from "../utils/operations";
+import { getUserDetails } from "../../utils/operations";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
 const DashboardBody = () => {
-  // const token = useSelector((state)=> state.auth.token)
-
   const [currentTab, setCurrentTab] = useState("All");
 
   const dispatch = useDispatch();
