@@ -14,7 +14,7 @@ export const getUserDetails = async(token:string | null)=>{
 }
 
 export const addCard = async(obj:cardPayload,token:string | null)=>{
-    console.log(token)
+    // console.log(token)
 
     const createdCard = await apiConnector("POST", apiEndpoints.CONTENT_API , obj,{Authorisation: token})
     return createdCard

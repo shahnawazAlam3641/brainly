@@ -60,7 +60,7 @@ const Sign = () => {
 
   const sign = async (formdata: FieldValues) => {
     if (isSigninPage) {
-      console.log(formdata);
+      // console.log(formdata);
 
       const toastId = toast.loading("Logging In");
 
@@ -69,7 +69,7 @@ const Sign = () => {
           email: formdata.Email,
           password: formdata.Password,
         });
-        console.log(response);
+        // console.log(response);
         const token = response?.data?.token;
 
         localStorage.setItem("token", token);
@@ -88,7 +88,7 @@ const Sign = () => {
         toast.error(error.response.data.message);
       }
     } else {
-      console.log(formdata);
+      // console.log(formdata);
 
       const toastId = toast.loading("Logging In");
 
@@ -106,7 +106,7 @@ const Sign = () => {
         //   toast.dismiss(toastId);
         //   toast.error(response.data.messsage);
         // }
-        console.log(response);
+        // console.log(response);
         const token = response?.data?.token;
 
         localStorage.setItem("token", token);

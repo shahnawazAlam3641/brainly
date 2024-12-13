@@ -101,7 +101,7 @@ const NotesContainer = (props: propsData) => {
         if (response.data.success == true) {
           dispatch(setSignupData(response.data.user));
         }
-        console.log(response);
+        // console.log(response);
         setPrivacyModal(false);
         setAddModal(false);
         setShareModal(false);

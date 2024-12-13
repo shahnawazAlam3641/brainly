@@ -20,12 +20,12 @@ interface sharedBrainData {
 const SharedBrain = () => {
   const token = useSelector((state: RootState) => state.auth.token);
 
-  console.log(token);
+  // console.log(token);
   const { id } = useParams();
 
   const [brain, setBrain] = useState<sharedBrainData>();
 
-  console.log(brain);
+  // console.log(brain);
 
   const fetchBrainDetails = async () => {
     const toastId = toast.loading("Loading");
@@ -33,13 +33,13 @@ const SharedBrain = () => {
       if (id) {
         const response = await getSharedBrain(id);
         // console.log("firstfirstfirstfirstfirstfirst");
-        console.log(response.data.isPrivate);
+        // console.log(response.data.isPrivate);
 
         if (response.data.isPrivate) {
-          console.log(response.data);
+          // console.log(response.data);
           setBrain(response.data);
         } else {
-          console.log(response);
+          // console.log(response);
           setBrain(response.data.user);
         }
 
