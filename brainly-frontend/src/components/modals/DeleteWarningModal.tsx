@@ -1,4 +1,3 @@
-import React from "react";
 import Button from "../common/Button";
 import { deleteUserNote } from "../../utils/operations";
 import { RootState } from "../../reducer";

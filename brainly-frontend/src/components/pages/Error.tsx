@@ -1,4 +1,3 @@
-import React from "react";
 import ErrorGraphic from "../../assets/ErrorGraphic.svg";
 
 const Error = () => {
