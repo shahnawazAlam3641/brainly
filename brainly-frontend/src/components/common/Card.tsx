@@ -3,36 +3,28 @@
 import DeleteIcon from "../../svgs/DeleteIcon";
 // import ShareIcon from "../svgs/ShareIcon";
 import DocumentIcon from "../../svgs/DocumentIcon";
-import { deleteUserNote } from "../../utils/operations";
-import { useDispatch } from "react-redux";
-import { deleteNote, NoteDoc } from "../../slices/notesSlice";
+import { NoteDoc } from "../../slices/notesSlice";
 import YoutubeIcon from "../../svgs/YoutubeIcon";
 import TwitterIcon from "../../svgs/TwitterIcon";
 import LinkIcon from "../../svgs/LinkIcon";
+import DeleteWarningModal from "../modals/DeleteWarningModal";
+import { useState } from "react";
 
 interface cardProp {
   card: NoteDoc;
   token: string | null;
+  setDeleteModal?: (data: boolean) => void;
   keyValue?: string;
   isShared?: boolean;
 }
 
 const Card = (props: cardProp) => {
-  // const [typeIcon, setTypeIcon] = useState(<DocumentIcon />);
-
-  const dispatch = useDispatch();
-
   const createdAt = new Date(props?.card?.createdAt);
 
-  const deleteNoteHandler = async (id: string) => {
-    const response = await deleteUserNote(id, props.token);
-    if (response.data.success) {
-      dispatch(deleteNote(id));
-    }
-  };
+  const [deleteModal, setDeleteModal] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2 mb-5 break-inside-avoid p-4 shadow-slate-400  bg-white border shadow-sm max-w-72 rounded-lg">
+    <div className="relative flex flex-col gap-2 mb-5 break-inside-avoid p-4 shadow-slate-400  bg-white border shadow-sm max-w-72 rounded-lg">
       {/* head */}
       <div className="flex justify-between items-center">
         <div className="flex gap-2   items-center">
@@ -55,10 +47,18 @@ const Card = (props: cardProp) => {
             {/* <ShareIcon /> */}
             <span
               className="hover:scale-95 transition-all duration-200 cursor-pointer"
-              onClick={() => deleteNoteHandler(props?.card?._id)}
+              onClick={() => setDeleteModal(true)}
               title="Delete"
             >
-              <DeleteIcon />
+              <div
+                onClick={() => {
+                  if (props.setDeleteModal) {
+                    props.setDeleteModal(true);
+                  }
+                }}
+              >
+                <DeleteIcon />
+              </div>
             </span>
           </div>
         )}
@@ -117,6 +117,13 @@ const Card = (props: cardProp) => {
           Added on - {createdAt.toDateString()}
         </p>
       </div>
+
+      {deleteModal && (
+        <DeleteWarningModal
+          cardId={props.card._id}
+          setDeleteModal={setDeleteModal}
+        />
+      )}
     </div>
   );
 };
