@@ -14,7 +14,7 @@ function App() {
         <Route index element={<Hero />} />
         <Route path="/signin" element={<Sign />} />
         <Route path="/dashboard" element={<DashboardBody />} />
-        <Route path="/share/:id" element={<SharedBrain />} />
+        <Route path="/shared/:id" element={<SharedBrain />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
