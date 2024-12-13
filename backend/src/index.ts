@@ -1,4 +1,4 @@
-import express from "express"
+import express,{Request, Response} from "express"
 import dotenv from "dotenv"
 import connectDB from "./config/database";
 import cookieParser from "cookie-parser"
@@ -25,7 +25,13 @@ app.use(
   );
 
 
-
+  app.get("/api/v1", (req:Request,res:Response)=>{
+    res.status(200).json({
+      success:true,
+      message:"Server is upand running"
+      
+    })
+  })
 
 app.post("/api/v1/signup", signup)
 
