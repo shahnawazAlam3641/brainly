@@ -1,9 +1,11 @@
-// const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:4000/api/v1";
+const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
-// export const apiEndpoints = {
-//     SIGNUP_API: BASE_URL + "/signup",
-//     SIGNIN_API: BASE_URL + "/signuin",
-//     CONTENT_API: BASE_URL + "/content",
-//     GET_SHARED_BRAIN_API: BASE_URL + "/shared/:id",
-//     CHANGE_BRAIN_PRIVACY_API: BASE_URL + "/share/:id"
-//   };
+export const apiEndpoints = {
+    SIGNUP_API: BASE_URL + "/signup",
+    SIGNIN_API: BASE_URL + "/signin",
+    USER_DETAILS_API:BASE_URL+ "/userDetails",
+    CONTENT_API: BASE_URL + "/content",
+    DELETE_NOTE_API: BASE_URL + "/delete",
+    GET_SHARED_BRAIN_API: BASE_URL + "/shared/",
+    CHANGE_BRAIN_PRIVACY_API: BASE_URL + "/share/"
+  };

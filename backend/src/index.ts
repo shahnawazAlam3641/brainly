@@ -37,7 +37,7 @@ app.get("/api/v1/content", auth, fetchContent)
 
 app.delete("/api/v1/delete", auth, deleteContent)
 
-app.get("/api/v1/share/:id", getSharedContent)
+app.get("/api/v1/shared/:id", getSharedContent)
 
 app.put("/api/v1/share/:id",auth, changeContentPrivacy)
 

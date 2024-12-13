@@ -10,6 +10,7 @@ import { setSignupData, setToken } from "../../slices/authSlice";
 import { setNotes } from "../../slices/notesSlice";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { apiEndpoints } from "../../utils/apiEndpoints";
 
 // interface sign {
 //   Name?: string;
@@ -64,21 +65,11 @@ const Sign = () => {
       const toastId = toast.loading("Logging In");
 
       try {
-        const response = await apiConnector(
-          "POST",
-          "http://localhost:4000/api/v1/signin",
-          { email: formdata.Email, password: formdata.Password }
-        );
+        const response = await apiConnector("POST", apiEndpoints.SIGNIN_API, {
+          email: formdata.Email,
+          password: formdata.Password,
+        });
         console.log(response);
-
-        // if (!response.data.success) {
-        //   console.log("response is false");
-        //   toast.dismiss(toastId);
-        // } else {
-        //   console.log("response is true");
-        //   toast.dismiss(toastId);
-        //   toast.error(response.data.messsage);
-        // }
         const token = response?.data?.token;
 
         localStorage.setItem("token", token);
@@ -102,15 +93,11 @@ const Sign = () => {
       const toastId = toast.loading("Logging In");
 
       try {
-        const response = await apiConnector(
-          "POST",
-          "http://localhost:4000/api/v1/signup",
-          {
-            name: formdata.Name,
-            email: formdata.Email,
-            password: formdata.Password,
-          }
-        );
+        const response = await apiConnector("POST", apiEndpoints.SIGNUP_API, {
+          name: formdata.Name,
+          email: formdata.Email,
+          password: formdata.Password,
+        });
         // if (!response.data.success) {
         //   console.log("response is false");
         //   toast.dismiss(toastId);
