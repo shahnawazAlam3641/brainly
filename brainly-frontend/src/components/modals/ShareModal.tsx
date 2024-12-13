@@ -45,7 +45,7 @@ const ShareModal = (props: propsData) => {
           className="border w-full border-purple-200 border-solid text-slate-600 py-2 px-4  rounded-md"
           type="text"
           value={
-            window.location.href.replace("dashboard", "share") +
+            window.location.href.replace("dashboard", "shared") +
             "/" +
             currentUser?._id
           }
@@ -100,7 +100,7 @@ const ShareModal = (props: propsData) => {
         <Button
           onPress={() => {
             navigator.clipboard.writeText(
-              window.location.href.replace("dashboard", "share") +
+              window.location.href.replace("dashboard", "shared") +
                 "/" +
                 currentUser?._id
             );
