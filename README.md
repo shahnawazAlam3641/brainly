@@ -1,6 +1,6 @@
 # Brainly
 
-![Demo Video](brainly-frontend/src/assets/brainly-preview.mp4)
+![Demo Video](brainly-frontend/src/assets/brainly-preview2.mp4)
 
 [Live Project Link](https://brainly-typescript.vercel.app/)
 
