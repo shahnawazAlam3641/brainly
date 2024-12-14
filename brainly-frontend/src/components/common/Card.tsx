@@ -8,7 +8,7 @@ import YoutubeIcon from "../../svgs/YoutubeIcon";
 import TwitterIcon from "../../svgs/TwitterIcon";
 import LinkIcon from "../../svgs/LinkIcon";
 import DeleteWarningModal from "../modals/DeleteWarningModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface cardProp {
   card: NoteDoc;
@@ -22,6 +22,15 @@ const Card = (props: cardProp) => {
   const createdAt = new Date(props?.card?.createdAt);
 
   const [deleteModal, setDeleteModal] = useState(false);
+
+  useEffect(() => {
+    // Ensure Twitter widgets are loaded for new content
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const twttr = (window as any).twttr;
+    if (twttr && twttr.widgets) {
+      twttr.widgets.load();
+    }
+  }, [props.card]);
 
   return (
     <div className="relative flex flex-col gap-2 mb-5 break-inside-avoid p-4 shadow-slate-400  bg-white border shadow-sm max-w-72 rounded-lg">
