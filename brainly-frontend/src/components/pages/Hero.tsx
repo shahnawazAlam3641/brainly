@@ -1,6 +1,7 @@
 import Button from "../common/Button";
 import { useNavigate } from "react-router";
 import HeroSS from "../../assets/HeroSS.png";
+import previeVideo from "../../assets/brainly-preview.mp4";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -25,6 +26,18 @@ const Hero = () => {
         src={HeroSS}
         className="w-[80vw] max-w-[95vw] rounded-lg border shadow-slate-200 shadow-xl mb-10 grayscale  transition-all duration-500 hover:grayscale-0"
       />
+
+      {/* <video
+        width=""
+        height=""
+        autoPlay
+        loop
+        muted
+        className=" w-[80vw] max-w-[95vw] rounded-lg border shadow-slate-200 shadow-xl mb-10 grayscale  transition-all duration-500 hover:grayscale-0"
+      >
+        <source src={previeVideo} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video> */}
     </div>
   );
 };
