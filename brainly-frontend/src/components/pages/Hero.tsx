@@ -1,7 +1,7 @@
 import Button from "../common/Button";
 import { useNavigate } from "react-router";
 import HeroSS from "../../assets/HeroSS.png";
-import previeVideo from "../../assets/brainly-preview.mp4";
+// import previeVideo from "../../assets/brainly-preview.mp4";
 
 const Hero = () => {
   const navigate = useNavigate();
