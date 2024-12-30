@@ -1,6 +1,6 @@
 import Button from "../common/Button";
 import { useNavigate } from "react-router";
-import HeroSS from "../../assets/HeroSS.png";
+import brainlyPreview from "../../assets/brainlyPreview.png";
 // import previeVideo from "../../assets/brainly-preview.mp4";
 
 const Hero = () => {
@@ -23,7 +23,7 @@ const Hero = () => {
         />
       </div>
       <img
-        src={HeroSS}
+        src={brainlyPreview}
         className="w-[80vw] max-w-[95vw] rounded-lg border shadow-slate-200 shadow-xl mb-10 grayscale  transition-all duration-500 hover:grayscale-0"
       />
 
